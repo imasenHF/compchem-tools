@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# 使用 Multiwfn 批量将 Gaussian LOG 转换为 PDB。
+# I/O: *.log -> *.pdb
+# Requires: Multiwfn
+# Note: 历史文件名未带 .sh 后缀。
+
+icc=0
+nfile=`ls *.log|wc -l`
+for inf in *.log
+do
+((icc++))
+echo Converting ${inf} to ${inf//log/pdb} ... \($icc of $nfile\)
+Multiwfn ${inf} << EOF > /dev/null
+100
+2
+1
+${inf//log/pdb}
+0
+q
+EOF
+done
